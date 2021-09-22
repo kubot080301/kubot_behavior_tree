@@ -1,0 +1,32 @@
+<root main_tree_to_execute = "MainTree">
+    <BehaviorTree ID="MainTree">
+        <Sequence>
+            <SetBlackboard output_key="Goal_a" value="1.17;-1.65;0.0;1.0" />
+            <SetBlackboard output_key="Goal_b" value="1.1;1.51;0.0;1.0" />
+            <SetBlackboard output_key="Goal_c" value="-1.25;0.324;0.0;1.0" />
+            <SetBlackboard output_key="Waiting_time" value="2"/>
+            <Fallback>
+                <ReactiveSequence>
+                    <InterruptEvent event="gohome"/>
+                    <Repeat num_cycles="-1">
+                        <Sequence>
+                            <SubTree ID="MoveRobot" target="Goal_a" />
+                            <WaitingEvent name="waiting_event" waiting_time="{Waiting_time}"/>
+                            <SubTree ID="MoveRobot" target="Goal_b" />
+                            <WaitingEvent name="waiting_event" waiting_time="{Waiting_time}"/>
+                        </Sequence>
+                    </Repeat>
+                </ReactiveSequence>
+                <Sequence>
+                    <SubTree ID="MoveRobot" target="Goal_c" />
+                </Sequence>
+            </Fallback>
+        </Sequence>
+    </BehaviorTree>
+
+    <BehaviorTree ID="MoveRobot">
+        <Sequence name="SetGoal">
+            <MoveBase goal="{target}" />
+        </Sequence>
+    </BehaviorTree>
+</root>
